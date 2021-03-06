@@ -16,8 +16,13 @@ module.exports = ResourceController.extend ({
   getAll(){
     return Action.extend({
       execute(req, res){
-        console.log(this.controller.model);
         console.log('execute');
+        this.controller.model.find((err)=>{
+            if(err){
+              console.log('An error occurred: ' + err);
+            }
+            res.status(200);
+        });
       }
     });
   }
