@@ -14,21 +14,22 @@ module.exports = ResourceController.extend ({
     console.log('Initialized');
   },
   getAll(){
+    let data = async () =>{
+      try{
+        return await this.model.find((err, file)=>{
+          return file;
+        });
+      }
+      catch(err){
+        return err;
+      }
+    };
+    data().then((file)=> console.log(file));
     return Action.extend({
       execute(req, res){
-        var data;
-        console.log('execute');
-        this.controller.model.find((err, file)=>{
-            if(err){
-              console.log('An error occurred: ' + err);
-            }else{
-              console.log('Not error ');
-              //console.log(file);
-              console.log(typeof(file));
-            }
-            //console.log(data);
-        });
-        console.log(data);
+
+        console.log('test');
+        let data = {};
         res.status(200).json({data});
       }
     });
