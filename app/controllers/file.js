@@ -14,7 +14,7 @@ module.exports = ResourceController.extend ({
     console.log('Initialized');
   },
   getAll(){
-    let data = async () =>{
+    /*let data = async () =>{
       try{
         return await this.model.find((err, file)=>{
           return file;
@@ -23,14 +23,23 @@ module.exports = ResourceController.extend ({
       catch(err){
         return err;
       }
-    };
-    data().then((file)=> console.log(file));
+    };*/
+    //data().then((file)=> console.log(file));
     return Action.extend({
       execute(req, res){
-
-        console.log('test');
         let data = {};
-        res.status(200).json({data});
+        this.controller.model.find()
+        .exec()
+        .then(file =>{
+          //console.log(file);
+          //res.status(200).json(data);
+        })
+        .catch(err =>{
+          /*res.status(500).json({
+            error: err
+          });*/
+        });
+        res.status(200).send({data: data});
       }
     });
   }
