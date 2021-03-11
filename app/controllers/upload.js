@@ -4,7 +4,7 @@ const {
   SingleFileUploadAction,
   model
 } = require ('@onehilltech/blueprint');
-
+const multer = require('multer');
 /**
  * @class upload
  */
@@ -13,27 +13,25 @@ module.exports = Controller.extend ({
     console.log('init');
   },
   upload(){
-    return SingleFileUploadAction.extend({
+    return SingleFileUploadAction.extend({ 
       name: 'file',
-      Call: model('call'),
       onUploadComplete(req, res){
-        console.log('upload()');
-        console.log(req.file);
+        console.log("....");
         res.header("Access-Control-Allow-Methods", "*");
         res.header("Access-Control-Allow-Origin", "http://localhost:4200");
-        
+        console.log(req.body);
+        //multer()
         return this.Call.create({})
         .then(program =>{
 
         })
-
       }
     });
   },
   option(){
-    return SingleFileUploadAction.extend({
+    return Action.extend({
       name: 'file',
-      onUploadComplete(req, res){
+      execute(req, res){
         console.log('option()');
         res.header("Access-Control-Allow-Methods", "*");
         res.header("Access-Control-Allow-Origin", "http://localhost:4200");
