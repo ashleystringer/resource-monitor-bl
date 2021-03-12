@@ -6,7 +6,7 @@ module.exports = {
   middleware : {
     validator  : { },
     bodyParser : {
-      urlencoded : { extended: false },
+      urlencoded : { extended: true },
       json : { }
     },
 

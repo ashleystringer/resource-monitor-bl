@@ -9,4 +9,4 @@ const schema = new Schema({
     //thread: {type: ObjectId, required: true}
 });
 
-module.exports = mongodb.resource('call', schema, 'data');
+module.exports = mongodb.resource('call', schema, 'content');
