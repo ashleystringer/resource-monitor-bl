@@ -10,6 +10,7 @@ const fs = require('fs');
  * @class upload
  */
 module.exports = Controller.extend ({
+  Call: model('call'),
   init(){
     console.log('init');
   },
@@ -17,6 +18,7 @@ module.exports = Controller.extend ({
     
     return SingleFileUploadAction.extend({ 
       name: 'file',
+      //Call: model('call'),
       onUploadComplete(req, res){
         console.log("....");
         res.header("Access-Control-Allow-Methods", "*");
@@ -25,15 +27,20 @@ module.exports = Controller.extend ({
         const test_fileStr = test_file.toString();
         console.log(test_fileStr);
         let test_fileJSON = JSON.parse(test_fileStr);
-        /*console.log(test_fileJSON);
-        console.log(test_fileJSON.data[0].type);
-        console.log(req.file);*/
-        return this.Call.insert(test_fileJSON) //.create({})
-        .then(program =>{
+        console.log(test_fileJSON.data);
 
+        /*start_time: test_fileJSON.data[1].start, 
+              end_time: test_fileJSON.data[1].end, 
+              method_name: test_fileJSON.data[1].name, 
+              resource_type: test_fileJSON.data[1].type*/
+        return this.controller.Call.collection.insert( //this.controller.Call.collection.insert
+          test_fileJSON.data
+        )
+        .then(program =>{
+          console.log("Operation successful");
         })
         .catch(err =>{
-          console.log(err);
+          console.log("err: " + err);
         })
       }
     });
