@@ -18,42 +18,43 @@ module.exports = Controller.extend ({
     
     return SingleFileUploadAction.extend({ 
       name: 'file',
-      //Call: model('call'),
       onUploadComplete(req, res){
-        console.log("....");
         res.header("Access-Control-Allow-Methods", "*");
         res.header("Access-Control-Allow-Origin", "http://localhost:4200");
-        const test_file = fs.readFileSync(req.file.path);
-        const test_fileStr = test_file.toString();
-        console.log(test_fileStr);
-        let test_fileJSON = JSON.parse(test_fileStr);
-        console.log(test_fileJSON.data);
 
-        /*start_time: test_fileJSON.data[1].start, 
-              end_time: test_fileJSON.data[1].end, 
-              method_name: test_fileJSON.data[1].name, 
-              resource_type: test_fileJSON.data[1].type*/
-        return this.controller.Call.collection.insert( //this.controller.Call.collection.insert
-          test_fileJSON.data
+        const file = fs.readFileSync(req.file.path);
+        const file_str = file.toString();
+        console.log(file_str);
+
+        let file_strJSON = JSON.parse(file_str);
+        console.log(file_strJSON.data);
+
+        /*for(var i = 0; i < file_strJSON.data.length; i++){
+          console.log("i: " + i);
+        }*/
+
+        this.controller.Call.collection.insertMany(
+          file_strJSON.data
         )
         .then(program =>{
           console.log("Operation successful");
+          //res.status(200).json({file_strJSON});
         })
         .catch(err =>{
           console.log("err: " + err);
         })
+
+        res.status(200).json({file_strJSON});
       }
     });
   },
   option(){
     return Action.extend({
-      name: 'file',
       execute(req, res){
-        console.log('option()');
+        console.log('option');
         res.header("Access-Control-Allow-Methods", "*");
         res.header("Access-Control-Allow-Origin", "http://localhost:4200");
         res.header("Access-Control-Allow-Headers", "content-type, cache-control, x-requested-with");
-        res.header("Content-Type", "multipart/form-data");
       }
     });
   }
