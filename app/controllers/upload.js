@@ -4,13 +4,14 @@ const {
   SingleFileUploadAction,
   model
 } = require ('@onehilltech/blueprint');
-const multer = require('multer');
 const fs = require('fs'); 
 /**
  * @class upload
  */
 module.exports = Controller.extend ({
   Call: model('call'),
+  Program: model('program'),
+  Thread: model('thread'),
   init(){
     console.log('init');
   },
@@ -26,25 +27,21 @@ module.exports = Controller.extend ({
         const file_str = file.toString();
         console.log(file_str);
 
-        let file_strJSON = JSON.parse(file_str);
-        console.log(file_strJSON.data);
+        let file_json = JSON.parse(file_str);
+        console.log(file_json.data);
 
-        /*for(var i = 0; i < file_strJSON.data.length; i++){
-          console.log("i: " + i);
-        }*/
-
-        this.controller.Call.collection.insertMany(
-          file_strJSON.data
+        return this.controller.Call.collection.insertMany(
+          file_json.data
         )
         .then(program =>{
           console.log("Operation successful");
-          //res.status(200).json({file_strJSON});
+          return res.status(200).json({file_json});
         })
         .catch(err =>{
           console.log("err: " + err);
+          return res.status(500).json({"error": err});
         })
 
-        res.status(200).json({file_strJSON});
       }
     });
   },
