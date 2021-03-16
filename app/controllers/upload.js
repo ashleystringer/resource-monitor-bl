@@ -9,9 +9,6 @@ const fs = require('fs');
  * @class upload
  */
 module.exports = Controller.extend ({
-  Call: model('call'),
-  Program: model('program'),
-  Thread: model('thread'),
   init(){
     console.log('init');
   },
@@ -19,6 +16,9 @@ module.exports = Controller.extend ({
     
     return SingleFileUploadAction.extend({ 
       name: 'file',
+      Call: model('call'),
+      Program: model('program'),
+      Thread: model('thread'),
       onUploadComplete(req, res){
         res.header("Access-Control-Allow-Methods", "*");
         res.header("Access-Control-Allow-Origin", "http://localhost:4200");
@@ -30,7 +30,7 @@ module.exports = Controller.extend ({
         let file_json = JSON.parse(file_str);
         console.log(file_json.data);
 
-        return this.controller.Call.collection.insertMany(
+        return this.Call.collection.insertMany( 
           file_json.data
         )
         .then(program =>{
